@@ -71,11 +71,9 @@ jobs:
       pull-requests: write
       id-token: write
 
-    outputs:
-      environment:
-        value: ${{ inputs.environment }}
-      plan_artifact:
-        value: tfplan-${{ inputs.environment }}
+    # outputs:
+    #   environment: ${{ inputs.environment }}
+    #   plan_artifact: tfplan-${{ inputs.environment }}
 
     defaults:
       run:
@@ -216,12 +214,10 @@ jobs:
   terraform-apply:
 
     name: "Terraform Apply - ${{ inputs.environment }}"
-
     needs:
       - terraform-plan
 
     if: ${{ inputs.run_apply == true }}
-
     runs-on: ubuntu-latest
 
     environment:
@@ -232,7 +228,6 @@ jobs:
       id-token: write
 
     defaults:
-
       run:
         shell: bash
         working-directory: ${{ inputs.working_directory }}
@@ -276,7 +271,6 @@ jobs:
       - name: Terraform Init
         run: |
           set -euo pipefail
-
           terraform init -input=false
 
 
@@ -289,7 +283,6 @@ jobs:
           TF_WORKSPACE_NAME: ${{ inputs.environment }}
         run: |
           set -euo pipefail
-
           terraform workspace select "$TF_WORKSPACE_NAME" \
             || terraform workspace new "$TF_WORKSPACE_NAME"
 
